@@ -1,84 +1,35 @@
 # SmartBuilder
 
-SmartBuilder es una librería educativa escrita en Python que actúa como puente entre Python y Solidity, permitiendo a los desarrolladores aprender y prototipar contratos inteligentes de manera simple y comprensible.
+SmartBuilder is a Python-based educational library designed to help developers learn the structure of Solidity smart contracts using familiar Python syntax. This tool serves as a conceptual bridge for Python developers entering the world of blockchain and smart contract development.
 
-## Objetivo
-Simplificar el aprendizaje de contratos inteligentes en Solidity a través de una sintaxis familiar en Python y herramientas automáticas de conversión.
+##  Overview
 
-## Instalación
-Por ahora, cloná este repositorio:
+SmartBuilder allows you to simulate key components of Solidity such as:
 
-```bash
-git clone https://github.com/tuusuario/smartbuilder.git
-cd smartbuilder
-```
+- `Contract` definitions
+- `Mapping` variables
+- `Function` declarations
+- Basic logic generation
 
-## Ejemplo básico
+This is **not** a Solidity compiler or interpreter. It is a learning tool to explore how smart contracts are structured, and how we can think about them from a Pythonic perspective.
+
+##  Example
+
 ```python
-from smartbuilder.contract import Contract
-from smartbuilder.function import Function
-from smartbuilder.mapping import Mapping
+from smartbuilder import Contract, Function, Mapping
 
-# Crear el contrato
-my_contract = Contract("HelloWorld")
+# Create a smart contract
+my_contract = Contract("Voting")
 
-# Agregar variables de estado
-my_contract.add_state_variable("messages", Mapping(str, str))
+# Add state variables
+my_contract.add_state_variable("candidates", Mapping(str, int))
 
-# Agregar función
-hello_fn = Function(
-    name="setMessage",
-    inputs=["user", "message"],
-    logic="""
-    messages[user] = message
-    """
-)
-my_contract.add_function(hello_fn)
+# Add a function to vote
+my_contract.add_function(Function(
+    name="vote",
+    inputs=["candidate"],
+    logic="candidates[candidate] += 1"
+))
 
-# Generar Solidity
+# Generate Solidity code
 print(my_contract.generate_solidity())
-```
-
-## 🛠 Estructura del proyecto
-```
-smartbuilder/
-├── contract.py
-├── function.py
-├── mapping.py
-├── generator.py
-examples/
-└── hello_world.py
-tests/
-└── test_contract.py
-```
-
-## Futuro
-- Generación directa de archivos `.sol`
-- Integración con Remix o Truffle
-- Visualización web con Streamlit o Gradio
-
-## Licencia
-Este proyecto está licenciado bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más información.
-
----
-
-### examples/hello_world.py
-```python
-from smartbuilder.contract import Contract
-from smartbuilder.function import Function
-from smartbuilder.mapping import Mapping
-
-contract = Contract("HelloWorld")
-contract.add_state_variable("messages", Mapping(str, str))
-
-fn = Function(
-    name="setMessage",
-    inputs=["user", "message"],
-    logic="""
-    messages[user] = message
-    """
-)
-
-contract.add_function(fn)
-print(contract.generate_solidity())
-```
